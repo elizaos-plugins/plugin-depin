@@ -3,7 +3,7 @@ import {
   elizaLogger
 } from "@elizaos/core";
 import NodeCache from "node-cache";
-import * as path from "path";
+import * as path from "node:path";
 var DEPIN_METRICS_URL = "https://gateway1.iotex.io/depinscan/explorer?is_latest=true";
 var DEPIN_PROJECTS_URL = "https://metrics-api.w3bstream.com/project";
 var DePINScanProvider = class {
@@ -69,11 +69,11 @@ var DePINScanProvider = class {
     } else if (typeof value === "number") {
       num = value;
     } else if (typeof value === "string") {
-      num = parseFloat(value);
+      num = Number.parseFloat(value);
     } else {
       return "";
     }
-    if (isNaN(num)) return value.toString();
+    if (Number.isNaN(num)) return value.toString();
     if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
     if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
     return num.toString();
@@ -408,13 +408,14 @@ var depinProjects = {
     ]
   ],
   handler: async (runtime, message, state, _options, callback) => {
-    if (!state) {
-      state = await runtime.composeState(message);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
     } else {
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     const projectsContext = composeContext({
-      state,
+      state: currentState,
       template: projectsTemplate
     });
     try {
@@ -434,7 +435,7 @@ var depinProjects = {
       console.error("Error in depin project plugin:", error);
       if (callback) {
         callback({
-          text: `Error processing request, try again`,
+          text: "Error processing request, try again",
           content: { error: error.message }
         });
       }
@@ -451,7 +452,7 @@ var sentientAI = {
     "NEWS",
     "WEATHER"
   ],
-  description: "Provde realtime information for Weather, News.",
+  description: "Provide realtime information for Weather, News.",
   examples: [
     [
       {
@@ -502,7 +503,7 @@ var sentientAI = {
   validate: async (_runtime, _message) => {
     return true;
   },
-  handler: async (runtime, message, state, options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     try {
       const content = message.content;
       const response = await fetch("https://quicksilver.iotex.ai/ask", {
