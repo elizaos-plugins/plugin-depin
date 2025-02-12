@@ -7,6 +7,7 @@ export default defineConfig({
     clean: true,
     format: ["esm"],
     external: [
+        "@elizaos/core",
         "dotenv",
         "fs",
         "path",

@@ -120,15 +120,15 @@ var DePINScanProvider = class {
         // Flatten array for compact representation
         categories ? categories.join(", ") : "",
         // Flatten array for compact representation
-        this.abbreviateNumber(market_cap?.toString()),
-        token_price?.toString(),
-        total_devices?.toString(),
-        avg_device_cost?.toString(),
-        days_to_breakeven?.toString(),
-        estimated_daily_earnings?.toString(),
-        chainid?.toString(),
-        coingecko_id?.toString(),
-        this.abbreviateNumber(fully_diluted_valuation?.toString())
+        this.abbreviateNumber(market_cap == null ? void 0 : market_cap.toString()),
+        token_price == null ? void 0 : token_price.toString(),
+        total_devices == null ? void 0 : total_devices.toString(),
+        avg_device_cost == null ? void 0 : avg_device_cost.toString(),
+        days_to_breakeven == null ? void 0 : days_to_breakeven.toString(),
+        estimated_daily_earnings == null ? void 0 : estimated_daily_earnings.toString(),
+        chainid == null ? void 0 : chainid.toString(),
+        coingecko_id == null ? void 0 : coingecko_id.toString(),
+        this.abbreviateNumber(fully_diluted_valuation == null ? void 0 : fully_diluted_valuation.toString())
       ];
     });
     parsedProjects.unshift(schema);
